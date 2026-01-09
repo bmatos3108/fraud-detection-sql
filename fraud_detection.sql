@@ -342,10 +342,11 @@ WITH risk_factors AS (
         END AS high_amount_score,
         
         -- Factor 2: Unusual time (15 points for late night 11PM-5AM)
-        CASE 
-            WHEN EXTRACT(HOUR FROM t.transaction_date) BETWEEN 23 AND 5 
-            THEN 15 ELSE 0 
-        END AS unusual_time_score,
+        CASE
+  		  WHEN EXTRACT(HOUR FROM t.transaction_date) >= 23 
+        	 OR EXTRACT(HOUR FROM t.transaction_date) <= 5
+   		 THEN 15 ELSE 0
+		END AS unusual_time_score,
         
         -- Factor 3: New location (25 points)
         CASE 
